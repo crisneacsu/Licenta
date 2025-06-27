@@ -1,0 +1,14 @@
+Se utilizeaza Visual Studio 2022. 
+Trebuie sa avem download-at .NET 8.0 de preferat in calculator. 
+Dupa ce am accesat proiectul trebuie sa instalat urmatoarele pachete: 
+iTextSharp
+Microsoft.EntityFrameworkCore
+Microsoft.EntityFrameworkCore.Design
+Microsoft.EntityFrameworkCore.SqlServer
+Microsoft.EntityFrameworkCore.Tools
+Microsoft.VisualStudio.Web.CodeGeneration.
+QRCoder
+Stripe.net
+Swashbuckle.AspNetCore
+System.Drawing.Common
+Acum ar trebui sa puteti rula proiectul.
