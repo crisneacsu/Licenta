@@ -1,0 +1,16 @@
+Componente necesare:
+Placă ESP32-CAM (de ex. AI-Thinker)
+Adaptor FTDI sau alt USB-Serial 
+Cabluri jumper
+Sursă de alimentare stabilă
+
+Montaj hardware:
+Adaptor USB-TTL → ESP32-CAM
+5V → 5V 
+GND → GND
+TXD → U0R
+RXD → U0T
+GND → IO0
+
+Se instaleaza Arduino IDE. Instalam pachetul ESP32 Board Package. Selectam placa si portul. Incarcam codul si dam upload. In timpul arhivarii trebuie scos pinul GND de la IO0. In consola va aparea ca am reusit sa ne conectam la Wifi.
+Vom primi o adresa ip unde putem sa accesam stream-ul camerei.
