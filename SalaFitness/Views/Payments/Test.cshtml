@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Test Minim";
+}
+
+<h2>Test Minim</h2>
+<button id="test-button">Click me</button>
+
+@section Scripts {
+    <script>
+        console.log("Scriptul Test Minim rulează");
+
+        var testButton = document.getElementById("test-button");
+        testButton.addEventListener("click", function () {
+            console.log("Butonul a fost apăsat");
+
+            fetch("/Payments/TestEndpoint", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ test: "Hello" })
+            })
+            .then(r => r.json())
+            .then(data => {
+                console.log("Răspuns primit:", data);
+                alert("Server says: " + data.message);
+            })
+            .catch(e => console.error("Eroare la fetch:", e));
+        });
+    </script>
+}

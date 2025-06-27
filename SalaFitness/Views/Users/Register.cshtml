@@ -1,0 +1,172 @@
+﻿@model SalaFitness.Models.RegisterViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Înregistrare Utilizator";
+}
+
+@section Styles {
+    <style>
+        body {
+            background: linear-gradient(135deg, #84fab0, #8fd3f4);
+        }
+
+        .register-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            margin: 80px auto; /* spațiu deasupra pentru navbar */
+        }
+
+            .register-card h2 {
+                text-align: center;
+                margin-bottom: 20px;
+                color: #333;
+            }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .text-danger {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s ease;
+        }
+
+            button[type="submit"]:hover {
+                background: #c0392b;
+            }
+
+        .register-footer {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+            .register-footer a {
+                color: #e74c3c;
+                font-weight: bold;
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+
+                .register-footer a:hover {
+                    color: #c0392b;
+                }
+    </style>
+}
+
+<div class="register-card">
+    <h2>Înregistrează-te</h2>
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <form asp-action="Register" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <label asp-for="Nume"></label>
+            <input asp-for="Nume" placeholder="Introdu numele" />
+            <span asp-validation-for="Nume" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Prenume"></label>
+            <input asp-for="Prenume" placeholder="Introdu prenumele" />
+            <span asp-validation-for="Prenume" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Gen"></label>
+            <select asp-for="Gen">
+                <option value="">Selectează</option>
+                <option value="Masculin">Masculin</option>
+                <option value="Feminin">Feminin</option>
+            </select>
+            <span asp-validation-for="Gen" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Varsta"></label>
+            <input asp-for="Varsta" type="number" placeholder="Introdu vârsta" min="16" max="100" />
+            <span asp-validation-for="Varsta" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" type="email" placeholder="Introdu emailul" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Parola"></label>
+            <input asp-for="Parola" type="password" placeholder="Introdu parola" />
+            <span asp-validation-for="Parola" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="TrainerCode">Cod Antrenor (opțional)</label>
+            <input asp-for="TrainerCode" placeholder="Introdu codul de antrenor" />
+            <span asp-validation-for="TrainerCode" class="text-danger"></span>
+            <small class="form-text text-muted">
+                Dacă ai codul de antrenor, introdu-l aici.
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="AdminCode">Cod Admin (opțional)</label>
+            <input asp-for="AdminCode" placeholder="Introdu codul de administrator" />
+            <span asp-validation-for="AdminCode" class="text-danger"></span>
+            <small class="form-text text-muted">
+                Dacă ești administrator, introdu codul tău secret aici.
+            </small>
+        </div>
+
+        <button type="submit">Înregistrează-te</button>
+    </form>
+
+    <div class="register-footer">
+        <p>
+            Ai deja cont?
+            <a asp-controller="Users" asp-action="Login">Conectează-te acum!</a>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.2/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.6/jquery.validate.unobtrusive.min.js"></script>
+}

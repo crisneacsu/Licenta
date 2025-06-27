@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Plată reușită - Matinal";
+}
+
+<div class="container my-5">
+    <h2 class="text-center text-success">Plată reușită!</h2>
+    <div class="card mx-auto" style="max-width: 500px;">
+        <div class="card-body">
+            <p class="card-text">
+                Plata pentru abonamentul <strong>Matinal (până la ora 14:00)</strong> a fost efectuată cu succes.
+            </p>
+            <p class="card-text">
+                Abonamentul tău este activ și va expira la: <strong>@DateTime.UtcNow.AddMonths(1).ToString("dd.MM.yyyy")</strong>
+            </p>
+            <div class="text-center">
+                <a href="/Home/Index" class="btn btn-primary">Mergi la Home</a>
+            </div>
+        </div>
+    </div>
+</div>

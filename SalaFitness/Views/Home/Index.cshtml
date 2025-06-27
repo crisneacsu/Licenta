@@ -1,0 +1,74 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Pagina de Prezentare";
+}
+
+@section Styles {
+    <style>
+        .hero-container {
+            height: 100vh;
+            background: url('/Sala.jpg') no-repeat center center/cover;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+
+            .hero-container::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 0;
+            }
+
+        .hero-overlay {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+            .hero-overlay h1 {
+                font-size: 3rem;
+                margin-bottom: 20px;
+            }
+
+            .hero-overlay p {
+                font-size: 1.5rem;
+                margin-bottom: 30px;
+                max-width: 800px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+        .cta-button {
+            display: inline-block;
+            background: #e74c3c;
+            color: #fff;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+            .cta-button:hover {
+                background: #c0392b;
+            }
+    </style>
+}
+
+<div class="hero-container">
+    <div class="hero-overlay">
+        <h1>Bine ai venit la GymConnect</h1>
+        <p>Descoperă facilitățile noastre moderne, antrenorii profesioniști și programele personalizate pentru a-ți atinge obiectivele de fitness.</p>
+        <a class="cta-button" href="@(User.Identity.IsAuthenticated ? Url.Action("Abonamente", "Users") : Url.Action("Register", "Users"))">
+            Începe-ți călătoria acum!
+        </a>
+    </div>
+</div>

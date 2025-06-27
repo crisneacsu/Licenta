@@ -1,0 +1,27 @@
+﻿@model IEnumerable<SalaFitness.Models.Review>
+
+@foreach (var r in Model.OrderByDescending(x => x.CreatedAt))
+{
+    <div class="review-card">
+        <div class="review-header">
+            <strong>@r.User.Nume @r.User.Prenume</strong>
+
+            <!-- stelele -->
+            <span class="stars">
+                @{
+                    for (int i = 1; i <= 5; i++)
+                    {
+                        var star = i <= r.Rating ? "&#9733;" : "&#9734;";   // ★ / ☆
+                        @Html.Raw(star)
+                        // <‑‑ diferența!
+                    }
+                }
+            </span>
+
+            <span class="date">@r.CreatedAt.ToString("dd.MM.yyyy")</span>
+        </div>
+
+        <p class="comment">@r.Comment</p>
+    </div>
+}
+

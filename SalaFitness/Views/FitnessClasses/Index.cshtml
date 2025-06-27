@@ -1,0 +1,206 @@
+﻿@using System.Collections.Generic
+@{
+    ViewData["Title"] = "Calendar Clase";
+
+    // Grupăm clasele după data de start (doar ziua, fără oră)
+    var fitnessClasses = (IEnumerable<SalaFitness.Models.FitnessClass>)Model;
+    var classesByDay = fitnessClasses
+        .GroupBy(fc => fc.StartTime.Date)
+        .ToDictionary(g => g.Key, g => g.ToList());
+
+    // Calculăm data de luni a săptămânii curente (considerăm luni ca începutul săptămânii)
+    var today = DateTime.Today;
+    int diff = ((int)today.DayOfWeek + 6) % 7; // dacă today e luni, diff=0; duminică devine 6 etc.
+    var currentMonday = today.AddDays(-diff);
+
+    // Ziile pentru săptămâna curentă și pentru săptămâna următoare
+    var currentWeekDays = Enumerable.Range(0, 7).Select(i => currentMonday.AddDays(i)).ToList();
+    var nextWeekDays = Enumerable.Range(7, 7).Select(i => currentMonday.AddDays(i)).ToList();
+}
+
+@section Styles {
+    <style>
+        body {
+            background: linear-gradient(135deg, #84fab0, #8fd3f4);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .calendar-container {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 20px;
+        }
+
+        .week-title {
+            text-align: center;
+            margin: 40px 0 20px;
+            font-size: 1.8rem;
+            color: #333;
+            font-weight: 600;
+        }
+        /* Card pentru fiecare zi */
+        .day-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+            .day-card .card-header {
+                background: #f8f9fa;
+                padding: 10px;
+                text-align: center;
+                font-weight: 600;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .day-card .card-body {
+                padding: 10px;
+            }
+
+        .class-item {
+            padding: 5px 0;
+            border-bottom: 1px dashed #ddd;
+            margin-bottom: 5px;
+        }
+
+            .class-item:last-child {
+                border-bottom: none;
+            }
+
+            .class-item strong {
+                display: block;
+                color: #333;
+            }
+
+            .class-item small {
+                color: #777;
+            }
+        /* Butonul "Detalii" centrat */
+        .btn-details-container {
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .btn-details {
+            font-size: 0.8rem;
+            padding: 4px 8px;
+            background: #17a2b8;
+            color: #fff;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background 0.3s ease, transform 0.3s ease;
+            display: inline-block;
+        }
+
+            .btn-details:hover {
+                background: #138496;
+                transform: scale(1.05);
+            }
+
+        .no-classes {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+            margin: 10px 0;
+        }
+        /* Layout pentru fiecare săptămână - 7 coloane */
+        .week-row {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+
+        .week-column {
+            flex: 1 0 120px;
+            min-width: 120px;
+        }
+    </style>
+}
+
+<div class="calendar-container">
+    <h2 class="week-title">Săptămâna Curentă</h2>
+    <div class="week-row">
+        @foreach (var day in currentWeekDays)
+        {
+            <div class="week-column">
+                <div class="card day-card">
+                    <div class="card-header">
+                        @day.ToString("ddd")<br />
+                        <small>@day.ToString("dd.MM")</small>
+                    </div>
+                    <div class="card-body">
+                        @if (classesByDay.ContainsKey(day))
+                        {
+                            foreach (var cls in classesByDay[day])
+                            {
+                                <div class="class-item">
+                                    <strong>@cls.Title</strong>
+                                    <small>@cls.StartTime.ToString("HH:mm") - @cls.EndTime.ToString("HH:mm")</small>
+                                    <div class="btn-details-container">
+                                        <a asp-action="Details" asp-route-id="@cls.Id" class="btn-details">Detalii</a>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            if (day <= DateTime.Today)
+                            {
+                                <div class="no-classes">Toate clasele s-au terminat</div>
+                            }
+                            else
+                            {
+                                <div class="no-classes">Fără clase</div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <h2 class="week-title">Săptămâna Următoare</h2>
+    <div class="week-row">
+        @foreach (var day in nextWeekDays)
+        {
+            <div class="week-column">
+                <div class="card day-card">
+                    <div class="card-header">
+                        @day.ToString("ddd")<br />
+                        <small>@day.ToString("dd.MM")</small>
+                    </div>
+                    <div class="card-body">
+                        @if (classesByDay.ContainsKey(day))
+                        {
+                            foreach (var cls in classesByDay[day])
+                            {
+                                <div class="class-item">
+                                    <strong>@cls.Title</strong>
+                                    <small>@cls.StartTime.ToString("HH:mm") - @cls.EndTime.ToString("HH:mm")</small>
+                                    <div class="btn-details-container">
+                                        <a asp-action="Details" asp-route-id="@cls.Id" class="btn-details">Detalii</a>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            if (day <= DateTime.Today)
+                            {
+                                <div class="no-classes">Toate clasele s-au terminat</div>
+                            }
+                            else
+                            {
+                                <div class="no-classes">Fără clase</div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

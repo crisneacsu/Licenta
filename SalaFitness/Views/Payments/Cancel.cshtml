@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Plată anulată";
+}
+
+@section Styles {
+    <style>
+        body {
+            background: linear-gradient(135deg, #84fab0, #8fd3f4);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .cancel-container {
+            max-width: 500px;
+            margin: 100px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+        }
+
+            .cancel-container h2 {
+                color: #e74c3c;
+                margin-bottom: 20px;
+                font-size: 2rem;
+            }
+
+            .cancel-container p {
+                font-size: 1.1rem;
+                color: #555;
+                margin-bottom: 30px;
+            }
+
+        .btn-warning {
+            background: #f39c12;
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 10px 25px;
+            transition: background 0.3s ease, transform 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+            .btn-warning:hover {
+                background: #e67e22;
+                transform: scale(1.05);
+            }
+    </style>
+}
+
+<div class="cancel-container">
+    <h2>Plată anulată</h2>
+    <p>Plata a fost anulată sau nu a fost finalizată.</p>
+    <a href="/Users/Abonamente" class="btn btn-warning">Înapoi la Abonamente</a>
+</div>

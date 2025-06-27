@@ -1,0 +1,150 @@
+﻿@model SalaFitness.Models.FitnessClass
+@{
+    ViewData["Title"] = "Detalii Clasă";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        body {
+            background: linear-gradient(135deg, #84fab0, #8fd3f4);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .class-details-card {
+            max-width: 600px;
+            margin: 80px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+
+            .class-details-card h2 {
+                text-align: center;
+                margin-bottom: 30px;
+                color: #333;
+                font-weight: 600;
+            }
+
+        .card-header {
+            background: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+            .card-header h4 {
+                margin: 0;
+                font-weight: 600;
+                color: #333;
+            }
+
+        .card-body {
+            padding: 20px;
+        }
+
+            .card-body p {
+                margin: 10px 0;
+                font-size: 1rem;
+                color: #555;
+            }
+
+                .card-body p strong {
+                    width: 150px;
+                    display: inline-block;
+                    font-weight: 600;
+                    color: #333;
+                }
+
+        .card-footer {
+            padding: 15px;
+            background: transparent;
+            border-top: 1px solid #ddd;
+            text-align: center;
+        }
+
+            .card-footer form,
+            .card-footer a {
+                margin: 5px;
+            }
+
+        .btn-success {
+            background: #28a745;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+            .btn-success:hover {
+                background: #218838;
+                transform: scale(1.05);
+            }
+
+        .btn-secondary {
+            background: #6c757d;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.3s, transform 0.3s;
+            color: #fff;
+            text-decoration: none;
+        }
+
+            .btn-secondary:hover {
+                background: #5a6268;
+                transform: scale(1.05);
+            }
+
+        .alert {
+            margin-bottom: 0;
+        }
+    </style>
+}
+
+<div class="container my-5">
+    <div class="class-details-card">
+        <h2>Detalii Clasă</h2>
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+        }
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+        }
+
+        <div class="card">
+            <div class="card-header">
+                <h4>@Model.Title</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>Descriere:</strong> @Model.Description</p>
+                <p><strong>Start:</strong> @Model.StartTime.ToString("g")</p>
+                <p><strong>End:</strong> @Model.EndTime.ToString("g")</p>
+                <p><strong>Capacitate maximă:</strong> @Model.MaxCapacity</p>
+                <p><strong>Număr înscriși:</strong> @Model.Enrollments.Count</p>
+            </div>
+            <div class="card-footer">
+                @if (Model.Enrollments.Count < Model.MaxCapacity)
+                {
+                    <form asp-action="Enroll" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn btn-success">Înscrie-te</button>
+                    </form>
+                }
+                else
+                {
+                    <div class="alert alert-warning">Clasa este plină!</div>
+                }
+                <a asp-action="Index" class="btn btn-secondary">Înapoi la Liste</a>
+            </div>
+        </div>
+    </div>
+</div>

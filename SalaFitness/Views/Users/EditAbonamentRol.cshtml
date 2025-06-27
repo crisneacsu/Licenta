@@ -1,0 +1,43 @@
+﻿@model SalaFitness.Models.User
+
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<h2>Edit User</h2>
+
+<form asp-action="EditAbonamentRol" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group mb-3">
+        <label asp-for="Nume" class="form-label"></label>
+        <input asp-for="Nume" class="form-control" />
+        <span asp-validation-for="Nume" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="Prenume" class="form-label"></label>
+        <input asp-for="Prenume" class="form-control" />
+        <span asp-validation-for="Prenume" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="Rol" class="form-label">Rol</label>
+        <select asp-for="Rol" asp-items="ViewBag.UserRoles" class="form-control"></select>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="Abonament" class="form-label">Abonament</label>
+        <select asp-for="Abonament" asp-items="ViewBag.AbonamentTypes" class="form-control"></select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salvează</button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

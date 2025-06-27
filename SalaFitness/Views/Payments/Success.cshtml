@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Plată reușită";
+}
+
+@section Styles {
+    <style>
+        body {
+            background: linear-gradient(135deg, #84fab0, #8fd3f4);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .success-container {
+            max-width: 500px;
+            margin: 100px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+        }
+
+            .success-container h2 {
+                color: #27ae60; /* verde pentru succes */
+                margin-bottom: 20px;
+                font-size: 2rem;
+            }
+
+            .success-container p {
+                font-size: 1.1rem;
+                color: #555;
+                margin-bottom: 30px;
+            }
+
+        .btn-primary {
+            background: #27ae60;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 10px 25px;
+            transition: background 0.3s ease, transform 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+            .btn-primary:hover {
+                background: #1e8449;
+                transform: scale(1.05);
+            }
+    </style>
+}
+
+<div class="success-container">
+    <h2>Plată reușită!</h2>
+    <p>Mulțumim pentru plata efectuată. Te poți întoarce la pagina principală.</p>
+    <a asp-action="Index" asp-controller="Home" class="btn btn-primary">Pagina principală</a>
+</div>

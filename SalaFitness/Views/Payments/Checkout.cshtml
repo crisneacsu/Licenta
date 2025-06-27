@@ -1,0 +1,97 @@
+﻿@{
+    ViewData["Title"] = "Checkout";
+    var pret = ViewData["PretLei"] ?? 0;
+    var abonamentTip = ViewData["AbonamentTip"] as string ?? "";
+}
+
+@section Styles {
+    <style>
+        body {
+            background: linear-gradient(135deg, #84fab0, #8fd3f4);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .checkout-container {
+            max-width: 500px;
+            margin: 80px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            text-align: center;
+        }
+
+            .checkout-container h2 {
+                margin-bottom: 20px;
+                color: #333;
+            }
+
+        .checkout-info {
+            margin-bottom: 20px;
+        }
+
+            .checkout-info p {
+                font-size: 1.1rem;
+                color: #555;
+                margin: 10px 0;
+            }
+
+        #checkout-button {
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 12px 25px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+            #checkout-button:hover {
+                background: #c0392b;
+                transform: scale(1.05);
+            }
+    </style>
+}
+
+<div class="container my-5">
+    <div class="checkout-container">
+        <h2>Checkout</h2>
+        <div class="checkout-info">
+            <p><strong>Abonament selectat:</strong> @abonamentTip</p>
+            <p><strong>Preț:</strong> @pret lei</p>
+        </div>
+        <button id="checkout-button">Plătește @pret lei</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        console.log("Checkout.cshtml script is running");
+        var stripe = Stripe("@(ViewData["PublishableKey"])");
+
+        var checkoutButton = document.getElementById("checkout-button");
+        checkoutButton.addEventListener("click", function() {
+            console.log("Butonul a fost apăsat pentru abonamentul:", "@abonamentTip", "cu prețul:", @pret);
+
+            fetch("/Payments/CreateCheckoutSession", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    amount: @pret,   // trimitem prețul
+                    tip: "@abonamentTip" // trimitem tipul
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Session ID primit:", data.id);
+                return stripe.redirectToCheckout({ sessionId: data.id });
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+}

@@ -1,0 +1,140 @@
+﻿@{
+    ViewData["Title"] = "Statistici utilizatori";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .stats-container {
+            margin: 60px auto;
+            max-width: 1000px;
+        }
+
+        .stats-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        .stats-card {
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+            .stats-card .card-header {
+                background: #17a2b8;
+                color: #fff;
+                text-align: center;
+                font-weight: 600;
+                padding: 10px;
+            }
+
+            .stats-card .card-body {
+                padding: 20px;
+            }
+
+        #totalsGender,
+        #totalsSubscription {
+            font-size: 0.9rem;
+            color: #555;
+        }
+    </style>
+}
+
+<div class="container stats-container">
+    <h2 class="stats-title text-center">Distribuție utilizatori</h2>
+
+    <div class="row g-4">
+        <!-- Gender Chart -->
+        <div class="col-md-6">
+            <div class="card stats-card">
+                <div class="card-header">Gen</div>
+                <div class="card-body">
+                    <canvas id="genderChart" style="max-width:100%;"></canvas>
+                    <p id="totalsGender" class="text-center mt-3 fw-semibold"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subscription Chart -->
+        <div class="col-md-6">
+            <div class="card stats-card">
+                <div class="card-header">Abonamente</div>
+                <div class="card-body">
+                    <canvas id="subscriptionChart" style="max-width:100%;"></canvas>
+                    <p id="totalsSubscription" class="text-center mt-3 fw-semibold"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // === Gender Distribution ===
+            fetch('/Stats/GenderDistribution')
+                .then(r => r.ok ? r.json() : Promise.reject(r.status))
+                .then(data => {
+                    const ctx = document.getElementById('genderChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                data: data.valuesPct,
+                                backgroundColor: ['#e74c3c', '#3498db']
+                            }]
+                        },
+                        options: {
+                            plugins: {
+                                tooltip: { callbacks: { label: ctx => ctx.formattedValue + ' %' } },
+                                legend: { position: 'bottom' }
+                            }
+                        }
+                    });
+                    const total = data.countFem + data.countBarbati;
+                    document.getElementById('totalsGender').innerText =
+                        `Total clienți: ${total} • Femei: ${data.countFem} • Bărbați: ${data.countBarbati}`;
+                })
+                .catch(() => {
+                    document.getElementById('totalsGender').innerText =
+                        'Nu s-au putut încărca datele de gen.';
+                });
+
+            // === Subscription Distribution ===
+            fetch('/Stats/AbonamentDistribution')
+                .then(r => r.ok ? r.json() : Promise.reject(r.status))
+                .then(data => {
+                    const ctx = document.getElementById('subscriptionChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                data: data.valuesPct,
+                                backgroundColor: ['#e74c3c','#3498db','#f1c40f','#2ecc71']
+                            }]
+                        },
+                        options: {
+                            plugins: {
+                                tooltip: { callbacks: { label: ctx => ctx.formattedValue + ' %' } },
+                                legend: { position: 'bottom' }
+                            }
+                        }
+                    });
+                    const c = data.counts;
+                    const total = c.matinal + c.matinalParcare + c.allHours + c.allHoursParcare;
+                    document.getElementById('totalsSubscription').innerText =
+                        `Total abonamente: ${total} • Matinal: ${c.matinal} • Matinal+Parcare: ${c.matinalParcare} • All Hours: ${c.allHours} • All Hours+Parcare: ${c.allHoursParcare}`;
+                })
+                .catch(() => {
+                    document.getElementById('totalsSubscription').innerText =
+                        'Nu s-au putut încărca datele de abonamente.';
+                });
+        });
+    </script>
+}

@@ -1,0 +1,187 @@
+﻿@{
+    ViewData["Title"] = "Motivație - Fitness Gym";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-container">
+    <div class="motivation-section">
+        <h2>Motivație pentru succes</h2>
+        <div class="quote">
+            "Calea către succes începe cu un pas mic. Fiecare antrenament te face mai puternic!"
+        </div>
+        <div class="quotes-container">
+            <div class="quote-card">
+                <p>"Nu te opri când ești obosit, oprește-te când ai terminat!"</p>
+                <h4>- Emilia Cotul</h4>
+            </div>
+            <div class="quote-card">
+                <p>"Fiecare zi este o nouă oportunitate de a deveni cea mai bună versiune a ta!"</p>
+                <h4>- Sergiu Vescan</h4>
+            </div>
+            <div class="quote-card">
+                <p>"Dacă nu îți depășești limitele, nu îți vei atinge niciodată potențialul!"</p>
+                <h4>- Ciprian Cavajdan</h4>
+            </div>
+        </div>
+
+        <h2>Povești de succes</h2>
+        <div class="transformations-container">
+            <div class="transformation-card">
+                <img src="~/images/grasa1.jpg" alt="Transformare 1" />
+                <h4>Maria, 34 ani</h4>
+                <p>"Am pierdut 15 kg în 6 luni și mă simt mai energică ca niciodată! Fitnessul mi-a schimbat viața!"</p>
+            </div>
+            <div class="transformation-card">
+                <img src="~/images/Gras1.jpg" alt="Transformare 2" />
+                <h4>Ion, 27 ani</h4>
+                <p>"Am reușit să mă mențin în formă și să câștig masă musculară. Antrenamentele intense sunt cheia succesului!"</p>
+            </div>
+            <div class="transformation-card">
+                <img src="~/images/grasa2.jpg" alt="Transformare 3" />
+                <h4>Alexandra, 29 ani</h4>
+                <p>"După ce am început să mă antrenez regulat, am observat o îmbunătățire semnificativă a stării mele de spirit și sănătate!"</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==== Secțiunea de recenzii ==== -->
+<div class="container my-5">
+    <div class="motivation-section">
+        <h2>Recenzii ale Clienților</h2>
+
+        @* Formular de recenzie pentru utilizatorii autentificați *@
+        @if (User.Identity.IsAuthenticated)
+        {
+            <form asp-controller="Reviews" asp-action="Create" method="post" class="mb-4">
+                @Html.AntiForgeryToken()
+                <div class="row g-2 align-items-center">
+                    <div class="col-auto">
+                        <label for="rating" class="col-form-label">Rating:</label>
+                    </div>
+                    <div class="col-auto">
+                        <select name="rating" id="rating" class="form-select" required>
+                            <option value="">-- Alege --</option>
+                            <option value="1">1 stea</option>
+                            <option value="2">2 stele</option>
+                            <option value="3">3 stele</option>
+                            <option value="4">4 stele</option>
+                            <option value="5">5 stele</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <textarea name="comment" class="form-control" rows="3" maxlength="500" placeholder="Scrie-ți opinia..." required></textarea>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">Trimite recenzie</button>
+                    </div>
+                </div>
+            </form>
+        }
+        else
+        {
+            <p>
+                <a asp-controller="Users" asp-action="Login">Loghează-te</a> pentru a lăsa o recenzie.
+            </p>
+        }
+
+        @* Afișăm lista de recenzii prin ViewComponent *@
+        <div id="reviewsContainer">
+            @await Component.InvokeAsync("Reviews")
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .motivation-section {
+            width: 80%;
+            background-color: #fff;
+            padding: 30px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .transformations-container,
+        .quotes-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .quote-card,
+        .transformation-card {
+            background-color: #f2f2f2;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            padding: 20px;
+            max-width: 300px;
+        }
+
+            .quote-card p {
+                font-style: italic;
+                font-size: 16px;
+                color: #333;
+            }
+
+            .quote-card h4,
+            .transformation-card h4 {
+                margin-top: 10px;
+                font-size: 18px;
+                font-weight: 600;
+                color: #1abc9c;
+            }
+
+            .transformation-card img {
+                width: 100%;
+                border-radius: 8px;
+            }
+
+        .reviews-list .card {
+            margin-bottom: 15px;
+        }
+
+        .reviews-list .card-body {
+            padding: 15px;
+        }
+
+        .reviews-list .message {
+            margin-bottom: 5px;
+        }
+
+        .review-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,.07);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            font-size: 15px;
+        }
+
+        .stars {
+            color: #f1c40f; /* galben‑auriu */
+            font-size: 16px;
+            letter-spacing: 1px; /* spaţiu mic între stele */
+        }
+
+        .comment {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        <i class="bi bi-star-fill text-warning" > </i >
+        <i class="bi bi-star text-warning" > </i >
+    </style>
+
+}

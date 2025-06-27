@@ -1,0 +1,33 @@
+﻿@model IEnumerable<SalaFitness.Models.Review>
+
+<div class="reviews-list mt-4">
+    @if (!Model.Any())
+    {
+        <p>Nu există încă recenzii. Fii primul care lasă una!</p>
+    }
+    else
+    {
+        foreach (var rev in Model)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div>
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= rev.Rating)
+                            {
+                                <span>&#9733;</span>  @* stea plină *@
+                            }
+                            else
+                            {
+                                <span>&#9734;</span>  @* stea goală *@
+                            }
+                        }
+                    </div>
+                    <p class="mt-2">@rev.Comment</p>
+                    <small class="text-muted">Trimis la @rev.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</small>
+                </div>
+            </div>
+        }
+    }
+</div>
